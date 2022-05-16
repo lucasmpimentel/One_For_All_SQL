@@ -26,7 +26,9 @@ CREATE TABLE SpotifyClone.tracks(
     track_name VARCHAR(100) NOT NULL,
     author INT NOT NULL,
     album INT NOT NULL,
-    duration_seconds INT NOT NULL
+    duration_seconds INT NOT NULL,
+    FOREIGN KEY (album) REFERENCES albums (album_id),
+    FOREIGN KEY (author) REFERENCES artists (artist_id)
 ) ENGINE = InnoDB;
 
 CREATE TABLE SpotifyClone.users(
@@ -39,20 +41,20 @@ CREATE TABLE SpotifyClone.users(
 ) ENGINE = InnoDB;
 
 CREATE TABLE SpotifyClone.follows(
-	fav_id INT AUTO_INCREMENT PRIMARY KEY,
 	user_id INT NOT NULL,
     following_artist INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (user_id),
-    FOREIGN KEY (following_artist) REFERENCES artists (artist_id)
+    FOREIGN KEY (following_artist) REFERENCES artists (artist_id),
+    CONSTRAINT follow_id PRIMARY KEY(user_id, following_artist)
 ) ENGINE = InnoDB;
 
 CREATE TABLE SpotifyClone.history(
-	op_id INT AUTO_INCREMENT PRIMARY KEY,
 	history_songs INT NOT NULL,
 	play_date_history DATETIME NOT NULL,
 	user_id INT NOT NULL,
 	FOREIGN KEY (history_songs) REFERENCES tracks (track_id),
-	FOREIGN KEY (user_id) REFERENCES users (user_id)
+	FOREIGN KEY (user_id) REFERENCES users (user_id),
+    CONSTRAINT history_id PRIMARY KEY(user_id, history_songs)
 ) ENGINE = InnoDB;
 
 INSERT INTO SpotifyClone.plans (plan_name, plan_value)
